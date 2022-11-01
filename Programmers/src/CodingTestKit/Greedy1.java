@@ -1,18 +1,20 @@
 package CodingTestKit;
 
 import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class Greedy1 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println(solution(8, new int[] {5,6,7,8}, new int[] {4,7}));
+		System.out.println(solution(6, new int[] {4, 2}, new int[] {3, 5}));
 	}
 
     public static int solution(int n, int[] lost, int[] reserve) {
         int ans = n - lost.length;
         
+        Arrays.sort(lost);
         HashSet<Integer> lostSet = new HashSet<Integer>();
         HashSet<Integer> reserveSet = new HashSet<Integer>();
         
