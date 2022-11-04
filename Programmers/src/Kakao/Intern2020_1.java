@@ -11,14 +11,14 @@ public class Intern2020_1 {
         int arr[] = {4, 1, 1, 1, 2, 2, 2, 3, 3, 3};
         
         int left = 4, right = 4;
-        String ans = "";
+        StringBuilder sb = new StringBuilder();
         
         for(int i=0;i<numbers.length;i++) {
             int n = numbers[i];
             
             if(n == 1 || n == 4 || n == 7) {
                 left = arr[n];
-                ans += "L";
+                sb.append("L");
             }
             else if(n == 2 || n == 5 || n == 8 || n == 0) {
                 int tmpL = left < 0 ? Math.abs(-left - arr[n]) : Math.abs(left - arr[n]) + 1;
@@ -26,20 +26,20 @@ public class Intern2020_1 {
                 
                 if(tmpL < tmpR || (tmpL == tmpR && hand.equals("left"))) {
                     left = -arr[n];
-                    ans += "L";
+                    sb.append("L");
                 }
                 else if(tmpL > tmpR || (tmpL == tmpR && hand.equals("right"))) {
                     right = -arr[n];
-                    ans += "R";
+                    sb.append("R");
                 }
             }
             else {
                 right = arr[n];
-                ans += "R";
+                sb.append("R");
             }
         }
         
-        return ans;
+        return sb.toString();
     }
 
 }
