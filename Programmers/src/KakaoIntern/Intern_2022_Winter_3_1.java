@@ -1,4 +1,4 @@
-package Kakao;
+package KakaoIntern;
 
 import java.util.*;
 

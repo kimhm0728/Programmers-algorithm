@@ -19,6 +19,8 @@ public class Sort3 {
         while(cnt - 1 < arr.length) {
             if(arr[cnt - 1] >= cnt)
                 answer = cnt;
+            else
+            	break;
             cnt++;
         }
         

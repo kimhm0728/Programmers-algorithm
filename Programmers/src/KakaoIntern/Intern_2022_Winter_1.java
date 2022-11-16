@@ -1,4 +1,4 @@
-package Kakao;
+package KakaoIntern;
 
 public class Intern_2022_Winter_1 {
 	static int ans = -1;
