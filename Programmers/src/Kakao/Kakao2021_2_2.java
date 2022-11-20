@@ -2,7 +2,7 @@ package Kakao;
 
 import java.util.*;
 
-public class Kakao_2021_2 {
+public class Kakao2021_2_2 {
 	static HashMap<String, Integer> map = new HashMap<>();
 	static ArrayList<String> result = new ArrayList<>();
 	static int max;
