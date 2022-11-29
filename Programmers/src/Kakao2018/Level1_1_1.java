@@ -3,7 +3,7 @@ package Kakao2018;
 import java.util.*;
 
 public class Level1_1_1 {
-	// 2018 KAKAO BLIND RECRUITMENT 1차 Level 1문제 첫 번째 다트 게임
+	// 2018 KAKAO BLIND RECRUITMENT 1차 Level 1 첫 번째 문제 다트 게임
 
 	public static void main(String[] args) {
 		System.out.println(solution("1S2D*3T"));
