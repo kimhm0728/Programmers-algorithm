@@ -1,8 +1,8 @@
-package Kakao;
+package Kakao2019;
 
 import java.util.*;
 
-public class Kakao2019_2_1 {
+public class Level2_1 {
 
 	public static void main(String[] args) {
 		String[] result = solution(new String[] {"Enter uid1234 Muzi", 

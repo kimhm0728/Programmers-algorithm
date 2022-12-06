@@ -1,8 +1,8 @@
-package Kakao;
+package Kakao2019;
 
 import java.util.Arrays;
 
-public class Kakao2019_1 {
+public class Level1_1 {
 
 	public static void main(String[] args) {
 		int[] result = solution(5, new int[] {2, 1, 2, 6, 2, 4, 3, 3});

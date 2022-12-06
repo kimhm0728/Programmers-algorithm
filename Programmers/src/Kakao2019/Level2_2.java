@@ -1,8 +1,8 @@
-package Kakao;
+package Kakao2019;
 
 import java.util.*;
 
-public class Kakao2019_2_2 {
+public class Level2_2 {
 	static ArrayList<String> uniKey = new ArrayList<>();
 	static ArrayList<String> cdKey = new ArrayList<>();
 	static int n, m;

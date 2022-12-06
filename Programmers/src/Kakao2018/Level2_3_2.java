@@ -3,7 +3,8 @@ package Kakao2018;
 import java.util.Arrays;
 
 public class Level2_3_2 {
-
+	// 2018 KAKAO BLIND RECRUITMENT 3차 Level 2 두 번째 문제 파일명 정렬
+	
 	public static void main(String[] args) {
 		String[] files = {"img000012345", "img1.png","img2","IMG02"};
 		for(String str : solution(files))
