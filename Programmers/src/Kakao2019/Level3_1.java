@@ -11,41 +11,50 @@ public class Level3_1 {
 	}
 
 	static int solution(String word, String[] pages) {
-		HashMap<String, Page> map = new HashMap<>();
+		ArrayList<Page> list = new ArrayList<>();
 		double max = -1;
 		int idx = 20;
 		word = word.toLowerCase();
-
+		
 		for(int i=0;i<pages.length;i++) {
 			String page = pages[i];
-			Page p = new Page(i);
 			String url = findUrl(page);
-			map.put(url, p);
+			
+			Page p = new Page(url);
+			if(url.equals(""))
+				continue;
+			list.add(p);
 			
 			findWord(page, word, p);
 			findOutlink(page, p);
 		}
-
+		
 		// 링크점수 계산하기
-		for(Page p : map.values()) {
-			for(String link : p.outlink) 
-				if(map.containsKey(link))
-					map.get(link).addLinkScore((double)p.score / p.outlink_cnt);
-		}
-
-		// 매칭점수가 가장 높은 웹페이지 구하기
-		for(Page p : map.values()) {
-			if(((double)p.score + p.link) >= max && p.idx < idx) {
-				max = (double)p.score + p.link;
-				idx = p.idx;
+		for(int i=0;i<list.size();i++) {
+			Page out = list.get(i);
+			for(String link : out.outlink) {
+				for(int j=0;j<list.size();j++) {
+					Page in = list.get(j);
+					if(j != i && in.url.equals(link))
+						in.addLinkScore(out.score / (double)out.outlink_cnt);
+				}	
 			}
 		}
-
+		
+		// 매칭점수가 가장 높은 웹페이지 구하기
+		for(int i=0;i<list.size();i++) {
+			Page p = list.get(i);
+			if((p.score + p.link) > max) {
+				max = p.score + p.link;
+				idx = i;
+			}
+		}
+		
 		return idx;
 	}
 
 	static String findUrl(String str) {
-		String delim = "content=\"";
+		String delim = "<meta property=\"og:url\" content=\"";
 		int start = str.indexOf(delim) + delim.length();
 		int end = str.indexOf("\"", start);
 		
@@ -75,15 +84,15 @@ public class Level3_1 {
 		
 		str = str.toLowerCase().replaceAll("[^a-z]", " ");
 		StringTokenizer st = new StringTokenizer(str);
-		int score = 0;
+		double score = 0.0;
 		
 		while(st.hasMoreTokens()) {
 			if(st.nextToken().equals(word))
-				score++;
+				score += 1.0;
 		}
 		
 		p.setScore(score);
-	} 
+	}
 	
 	static void findOutlink(String str, Page p) {
 		String delim = "<a href=\"";
@@ -103,17 +112,17 @@ public class Level3_1 {
 	}
 	
 	static class Page {
-		int idx;
-		int score;
+		String url;
+		double score;
 		double link = 0;
 		int outlink_cnt = 0;
 		ArrayList<String> outlink = new ArrayList<>();
 
-		Page(int idx) {
-			this.idx = idx;
+		Page(String url) {
+			this.url = url;
 		}
 
-		void setScore(int score) {
+		void setScore(double score) {
 			this.score = score;
 		}
 
