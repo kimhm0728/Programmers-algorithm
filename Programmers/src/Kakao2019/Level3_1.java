@@ -1,14 +1,62 @@
 package Kakao2019;
 
 import java.util.*;
+import java.util.regex.*;
 
 public class Level3_1 {
 
 	public static void main(String[] args) {
-		System.out.println(solution("Blind",
-				new String[] {"<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://a.com\"/>\n</head>  \n<body>\nBlind Lorem Blind ipsum dolor Blind test sit amet, consectetur adipiscing elit. \n<a href=\"https://b.com\"> Link to b </a>\n</body>\n</html>", "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://b.com\"/>\n</head>  \n<body>\nSuspendisse potenti. Vivamus venenatis tellus non turpis bibendum, \n<a href=\"https://a.com\"> Link to a </a>\nblind sed congue urna varius. Suspendisse feugiat nisl ligula, quis malesuada felis hendrerit ut.\n<a href=\"https://c.com\"> Link to c </a>\n</body>\n</html>", "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://c.com\"/>\n</head>  \n<body>\nUt condimentum urna at felis sodales rutrum. Sed dapibus cursus diam, non interdum nulla tempor nec. Phasellus rutrum enim at orci consectetu blind\n<a href=\"https://a.com\"> Link to a </a>\n</body>\n</html>"}));
+		System.out.println(solution("Muzi",
+				new String[] {"<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://careers.kakao.com/interview/list\"/>\n</head>  \n<body>\n<a href=\"https://programmers.co.kr/learn/courses/4673\"></a>#!MuziMuzi!)jayg07con&&\n\n</body>\n</html>", "<html lang=\"ko\" xml:lang=\"ko\" xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta property=\"og:url\" content=\"https://www.kakaocorp.com\"/>\n</head>  \n<body>\ncon%\tmuzI92apeach&2<a href=\"https://hashcode.co.kr/tos\"></a>\n\n\t^\n</body>\n</html>"}));
 	}
 
+    static int solution(String word, String[] pages) {
+        Pattern homeurl_pattern = Pattern.compile("<meta property=\"og:url\" content=\"(\\S*)\"");
+        Pattern outurl_pattern = Pattern.compile("<a href=\"(\\S*)\"");
+        Pattern word_pattern = Pattern.compile("\\b(?i)" + word + "\\b");
+        
+        ArrayList<Page> list = new ArrayList<>();
+        
+        for(int i=0;i<pages.length;i++) {
+            String s = pages[i];
+            String word_s = s.substring(s.indexOf("<body>") + 6, s.indexOf("</body>")).replaceAll("[^a-zA-Z]", " ");
+            
+            Matcher homeurl_matcher = homeurl_pattern.matcher(s);
+            Matcher outurl_matcher = outurl_pattern.matcher(s);
+            Matcher word_matcher = word_pattern.matcher(word_s);
+            
+            String url = "";
+            if(homeurl_matcher.find())
+                url = homeurl_matcher.group(1);
+            else continue;
+            
+            ArrayList<String> outlink = new ArrayList<>();
+            while(outurl_matcher.find())
+                outlink.add(outurl_matcher.group(1));
+            
+            int cnt = 0;
+            while(word_matcher.find())
+                cnt++;
+            
+            list.add(new Page(i, url, cnt, outlink.toArray(new String[0])));
+        }
+        
+        for(int i=0;i<list.size();i++) {
+            Page in = list.get(i);
+            for(String link : in.outlink)
+                for(int j=0;j<list.size();j++) {
+                    Page out = list.get(j);
+                    if(i != j && out.url.equals(link))
+                        out.addLinkScore((double)in.score / in.outlink_cnt);
+                }
+        }
+        
+        list.sort((o1, o2) -> Double.compare(o1.match, o2.match) == 0 ? o1.idx - o2.idx : Double.compare(o2.match, o1.match));
+        
+        return list.get(0).idx;
+	}
+    
+	/*
 	static int solution(String word, String[] pages) {
 		ArrayList<Page> list = new ArrayList<>();
 		word = word.toLowerCase();
@@ -89,6 +137,7 @@ public class Level3_1 {
 		return list.toArray(new String[0]);
 	}
 
+	 */
 	static class Page {
 		String url;
 		int score, idx, outlink_cnt;
@@ -108,4 +157,5 @@ public class Level3_1 {
 			this.match += link;
 		}
 	}
+	
 }
