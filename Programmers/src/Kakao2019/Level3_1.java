@@ -53,21 +53,23 @@ public class Level3_1 {
 		return str.substring(start, end);
 	}
 
-	static int findWord(String page, String word) {
-        int startIndex = 0;
-        page = page.substring(page.indexOf("<body>"),page.indexOf("</body>"));
-        word = word.toLowerCase();
-        int normalpoint = 0;
-        for(;startIndex<page.length();){
-            startIndex = page.indexOf(word,startIndex+1);
-            if(startIndex==-1)
-                break;
-            if(!Character.isLetter(page.charAt(startIndex-1))&&!Character.isLetter(page.charAt(startIndex+word.length()))){
-                normalpoint++;
-                startIndex += word.length();
-            }
-        }
-        return normalpoint;
+	static int findWord(String str, String word) {
+		// body 부분만 추출
+		str = str.substring(str.indexOf("<body>"), str.indexOf("</body>"));
+
+		// 알파벳을 제외한 모든 문자는 빈칸으로 교체
+		str = str.toLowerCase().replaceAll("[^a-z]", " ");
+		
+		StringTokenizer st = new StringTokenizer(str);
+		int score = 0;
+
+		// 단어 단위로 자르기
+		while(st.hasMoreTokens()) {
+			if(st.nextToken().equals(word))
+				score++;
+		}
+
+		return score;
 	}
 
 	static String[] findOutlink(String str) {
