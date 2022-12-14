@@ -25,20 +25,23 @@ public class Level3_2 {
     	
     	tree.sort((o1, o2) -> o1.y == o2.y ? o1.x - o2.x : o2.y - o1.y);
         
-    	// 정렬된 노드들을 레벨 별로 배열에 담고, i+1레벨의 원소들을 탐색해 left, right 정하기
+    	int point = 1;
+    	
+    	// 레벨별로 arraylist에 담고 i레벨은 i+1레벨의 원소에서 가져오기
     	for(int i=0;i<n - 1;i++) {
     		int left = 0, right = 0;
     		Node now = tree.get(i);
-    		Node first = tree.get(i + 1);
+    		Node first = tree.get(point);
     		
     		left = isLeft(now, first);
-    		if(left == 0)
+    		if(left == 0) 
     			right = isRight(now, first);
-
-    		if(i != n - 2) {
-    			Node second = tree.get(i + 2);
-    			if(left != 0)
-    				right = isRight(now, second);
+    		point = left != 0 || right != 0 ? point + 1 : point;
+    		
+    		if(i != n - 2 && left != 0) {
+    			Node second = tree.get(point);
+    			right = isRight(now, second);
+    			point = right == 0 ? point : point + 1;
     		}
     		
     		now.setDir(left, right);
