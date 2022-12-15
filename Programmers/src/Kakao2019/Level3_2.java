@@ -39,7 +39,9 @@ public class Level3_2 {
     	nodes.sort((o1, o2) -> o1.y == o2.y ? o1.x - o2.x : o2.y - o1.y);
         
     	Node root = nodes.get(0);
-    	setChild(root, nodes);
+       	//setChild(root, nodes);
+    	for(int i=1;i<n;i++)
+    		insertNode(root, nodes.get(i));
         
     	preOrder(root);
     	idx = 0;
@@ -60,6 +62,20 @@ public class Level3_2 {
     	answer[1][idx++] = node.idx;
     }
     
+    static void insertNode(Node parent, Node child) {
+        if(parent.x > child.x)
+            if(parent.left == null)
+                parent.left = child;
+            else
+                insertNode(parent.left, child);
+        else
+            if(parent.right == null)
+                parent.right = child;
+            else 
+                insertNode(parent.right, child);
+    }
+    
+    /*
     static void setChild(Node node, ArrayList<Node> list) {
     	ArrayList<Node> left = new ArrayList<>();
     	ArrayList<Node> right = new ArrayList<>();
@@ -82,5 +98,6 @@ public class Level3_2 {
     	if(rightNode != null)
     		setChild(rightNode, right);
     }
+     */
     
 }
