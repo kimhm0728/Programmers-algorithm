@@ -5,23 +5,22 @@ import java.util.*;
 public class Level2_3_4 {
 	// 2018 KAKAO BLIND RECRUITMENT 3차 Level 2 네 번째 문제 방금그곡
 
-	static String ans = "";
+    static String ans = "(None)";
+    static int ansTime = 0;
 	
 	public static void main(String[] args) {
-		String[] musicinfos = {"03:00,03:05,FOO,ABCDEF"};
-		System.out.println(solution("ABCDEF", musicinfos));
+		String[] musicinfos = {"11:50,12:04,HELLO,CDEFGAB", "12:57,13:11,BYE,CDEFGAB"};
+		System.out.println(solution("ABCDEFG", musicinfos));
 	}
 	
     static String solution(String m, String[] musicinfos) {
     	String target = replaceMusic(m);
     	
-    	for(int i=0;i<musicinfos.length;i++) {
-            String[] music = getMusic(musicinfos[i]);
+    	for(String musicinfo : musicinfos) {
+            String[] music = getMusic(musicinfo);
             isSameMusic(target, music[0], music[1]); // 네오가 기억한 멜로디, 제목, 재생된 음
         }
     	
-        if(ans.equals(""))
-        	return "(None)";
         return ans;
     }
     
@@ -37,20 +36,7 @@ public class Level2_3_4 {
         int len = music.length();
         String[] ret = new String[2];
         ret[0] = title;
-        
-        if(time <= len)
-            ret[1] = music.substring(0, time);
-        else {
-        	StringBuilder sb = new StringBuilder();
-        	sb.append(music);
-        	
-        	// substring으로 변경하기
-        	for(int i=len;i<time;i++) {
-        		sb.append(music.charAt(i % len));
-        	}
-        	
-        	ret[1] = sb.toString();
-        }
+        ret[1] = music.repeat(time / len) + music.substring(0, time % len);
         
         return ret;
     }
@@ -75,10 +61,12 @@ public class Level2_3_4 {
     			for(int j=1;j<target.length();j++)
     				if(target.charAt(j) != music.charAt((i + j) % music.length()))
     					continue Loop;
-    	    	ans = ans.length() < title.length() ? title : ans;
+    	    	if(ansTime < music.length()) {
+                    ans = title;
+                    ansTime = music.length();
+                }
     	    	return;
     		}
     	}
     }
-
 }
